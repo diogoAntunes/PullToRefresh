@@ -31,7 +31,7 @@ open class PullToRefresh: NSObject {
     open var hideDelay: TimeInterval = 0
     open var springDamping: CGFloat = 0.4
     open var initialSpringVelocity: CGFloat = 0.8
-    open var animationOptions: UIViewAnimationOptions = [.curveLinear]
+    open var animationOptions: UIView.AnimationOptions = [.curveLinear]
     open var shouldBeVisibleWhileScrolling: Bool = false
     
     let refreshView: UIView
@@ -145,7 +145,7 @@ extension PullToRefresh {
             var offset: CGFloat
             switch position {
             case .top:
-                offset = previousScrollViewOffset.y + scrollViewDefaultInsets.top
+                offset = previousScrollViewOffset.y
                 
             case .bottom:
                 if scrollView!.contentSize.height > scrollView!.bounds.height {
@@ -272,7 +272,6 @@ private extension PullToRefresh {
             return
         }
         
-        scrollView.contentOffset = previousScrollViewOffset
         scrollView.bounces = false
         UIView.animate(
             withDuration: 0.3,
@@ -322,7 +321,7 @@ private extension PullToRefresh {
     var isCurrentlyVisible: Bool {
         guard let scrollView = scrollView else { return false }
         
-        return scrollView.normalizedContentOffset.y <= -scrollViewDefaultInsets.top
+        return scrollView.normalizedContentOffset.y <= 0
     }
     
     func bringRefreshViewToSuperview() {
@@ -339,7 +338,7 @@ private extension PullToRefresh {
         guard let scrollView = scrollView else { return }
         scrollView.addSubview(refreshView)
         refreshView.frame = scrollView.defaultFrame(forPullToRefresh: self)
-        scrollView.sendSubview(toBack: refreshView)
+        scrollView.sendSubviewToBack(refreshView)
     }
     
 }
