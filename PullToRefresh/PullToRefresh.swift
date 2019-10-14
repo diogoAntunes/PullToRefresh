@@ -182,7 +182,8 @@ extension PullToRefresh {
         } else {
             super.observeValue(forKeyPath: keyPath, of: object, change: change, context: context)
         }
-        previousScrollViewOffset.y = scrollView?.normalizedContentOffset.y ?? 0
+        
+        previousScrollViewOffset.y = scrollView?.contentOffset.y ?? 0
     }
     
     fileprivate func addScrollViewObserving() {
